@@ -75,7 +75,7 @@ exports.getPublishedBlogs = async (req, res) => {
         if (req.query.search) {
             search.$or = [
                 { title: { $regex: req.query.search, $options: 'i' } },
-                { description: { $regex: req.query.search, $options: 'i' } },
+                { author: { $regex: req.query.search, $options: 'i' } },
                 { tags: { $regex: req.query.search, $options: 'i' } }
             ];
         }
