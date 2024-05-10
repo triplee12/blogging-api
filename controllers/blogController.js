@@ -43,7 +43,7 @@ exports.getUserBlogs = async (req, res) => {
         }
 
         const sort = {};
-        if (req.query.orderBy && req.query.order) {
+        if (req.query.orderBy && ['read_count', 'reading_time', 'timestamp'].includes(req.query.orderBy)) {
             sort[req.query.orderBy] = req.query.order === 'desc' ? -1 : 1;
         } else {
             sort.timestamp = -1;
@@ -81,7 +81,7 @@ exports.getPublishedBlogs = async (req, res) => {
         }
 
         const sort = {};
-        if (req.query.orderBy && req.query.order) {
+        if (req.query.orderBy && ['read_count', 'reading_time', 'timestamp'].includes(req.query.orderBy)) {
             sort[req.query.orderBy] = req.query.order === 'desc' ? -1 : 1;
         } else {
             sort.timestamp = -1;
