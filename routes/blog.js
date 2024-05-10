@@ -6,6 +6,7 @@ const blogController = require("../controllers/blogController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.post('/', authMiddleware.verifyToken, blogController.createBlog);
+router.get('/user', authMiddleware.verifyToken, blogController.getUserBlogs);
 router.get('/published', blogController.getPublishedBlogs);
 router.get('/:id', blogController.getBlogById);
 router.put('/:id/update', authMiddleware.verifyToken, blogController.updateBlog);

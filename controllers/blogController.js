@@ -22,6 +22,44 @@ exports.createBlog = async (req, res) => {
     }
 };
 
+exports.getUserBlogs = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const skip = (page - 1) * limit;
+
+        const filter = {};
+        if (req.query.state) {
+            filter.state = req.query.state;
+        }
+
+        const search = {};
+        if (req.query.search) {
+            search.$or = [
+                { title: { $regex: req.query.search, $options: 'i' } },
+                { description: { $regex: req.query.search, $options: 'i' } },
+                { tags: { $regex: req.query.search, $options: 'i' } }
+            ];
+        }
+
+        const sort = {};
+        if (req.query.orderBy && req.query.order) {
+            sort[req.query.orderBy] = req.query.order === 'desc' ? -1 : 1;
+        } else {
+            sort.timestamp = -1;
+        }
+
+        const userId = req.user._id; // Get the user ID from the authenticated user
+        const blogs = await Blog.find({ ...filter, ...search, author: userId })
+            .sort(sort)
+            .skip(skip)
+            .limit(limit);
+        res.json(blogs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 exports.getPublishedBlogs = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
