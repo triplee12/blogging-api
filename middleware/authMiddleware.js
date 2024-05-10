@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
+require('dotenv').config();
 
 exports.verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
@@ -14,7 +15,7 @@ exports.verifyToken = (req, res, next) => {
         }
 
         try {
-            const user = await User.findById(decoded.id);
+            const user = await User.findById(decoded.userId);
             if (!user) {
                 return res.status(401).json({ error: 'Unauthorized: User not found' });
             }

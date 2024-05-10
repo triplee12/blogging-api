@@ -7,7 +7,11 @@ const Blog = require('../models/blogs');
 require('dotenv').config();
 
 const generateToken = (userId) => {
-    return jwt.sign({ userId }, process.env.JWT_SECRET, {expiresIn: '1h'});
+    try {
+        return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '3h' });
+    } catch (error) {
+        throw new Error('Failed to generate JWT token');
+    }
 };
 
 exports.signup = async (req, res) => {
@@ -21,8 +25,7 @@ exports.signup = async (req, res) => {
             password: hashedPassword
         });
         await user.save();
-        const token = generateToken(user._id);
-        res.json({ token });
+        res.status(201).json({ "message": "Account created successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -40,7 +43,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         const token = generateToken(user._id);
-        res.json({ token });
+        res.json({ 'Bearer': token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
