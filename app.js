@@ -3,6 +3,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/users');
+const blogRoutes = require('./routes/blogs');
+const authMiddleware = require('./middleware/authMiddleware');
 require('dotenv').config();
 
 const app = express();
@@ -21,6 +23,7 @@ mongoose.connect('mongodb://localhost:27017/blogapi', {
     });
 
 app.use('/auth', authRoutes);
+app.use('/blogs', blogRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
