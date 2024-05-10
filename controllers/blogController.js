@@ -5,12 +5,15 @@ const Blog = require('../models/blogs');
 exports.createBlog = async (req, res) => {
     try {
         const { title, description, tags, body } = req.body;
+        const wordCount = body.split(/\s+/).length;
+        const readingTime = Math.ceil(wordCount / 200);
         const blog = new Blog({
             title,
             description,
             author: req.user._id,
             tags,
             body,
+            reading_time: readingTime,
         });
         await blog.save();
         res.json(blog);
