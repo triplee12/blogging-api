@@ -24,7 +24,8 @@ passport.use(new LocalStrategy({
         }
         return done(null, user);
         } catch (error) {
-        return done(error);
+            logger.error(`Error logging in a user: ${error.message}`);
+            return done(error);
         }
     }
 ));
@@ -42,7 +43,8 @@ passport.use(new JwtStrategy({
         }
         return done(null, user);
         } catch (error) {
-        return done(error);
+            logger.error(`Error generating bearer token: ${error.message}`);
+            return done(error);
         }
     }
 ));
