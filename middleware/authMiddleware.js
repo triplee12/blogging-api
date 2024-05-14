@@ -1,28 +1,49 @@
-// Authentication middleware
-
-const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const { ExtractJwt } = require('passport-jwt');
+const bcrypt = require('bcrypt');
 const User = require('../models/users');
 require('dotenv').config();
 
-exports.verifyToken = (req, res, next) => {
-    const token = req.headers['authorization'];
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized: Token not provided' });
-    }
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ error: 'Unauthorized: Invalid token' });
-        }
-
+// Local Strategy for username/password authentication
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+    },
+    async (email, password, done) => {
         try {
-            const user = await User.findById(decoded.userId);
-            if (!user) {
-                return res.status(401).json({ error: 'Unauthorized: User not found' });
-            }
-            req.user = user;
-            next();
-        } catch (error) {
-            res.status(500).json({ error: error.message });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return done(null, false, { message: 'Invalid email or password' });
         }
-    });
-};
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return done(null, false, { message: 'Invalid email or password' });
+        }
+        return done(null, user);
+        } catch (error) {
+        return done(error);
+        }
+    }
+));
+
+// JWT Strategy for token authentication
+passport.use(new JwtStrategy({
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET
+    },
+    async (jwtPayload, done) => {
+        try {
+        const user = await User.findById(jwtPayload.userId);
+        if (!user) {
+            return done(null, false);
+        }
+        return done(null, user);
+        } catch (error) {
+        return done(error);
+        }
+    }
+));
+
+module.exports = passport;

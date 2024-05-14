@@ -4,15 +4,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const Blog = require('../models/blogs');
+const passport = require('../middleware/authMiddleware');;
 require('dotenv').config();
-
-const generateToken = (userId) => {
-    try {
-        return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '3h' });
-    } catch (error) {
-        throw new Error('Failed to generate JWT token');
-    }
-};
 
 exports.signup = async (req, res) => {
     try {
@@ -31,22 +24,19 @@ exports.signup = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+exports.login = async (req, res, next) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err || !user) {
+            return res.status(401).json({ message: info.message });
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
-        const token = generateToken(user._id);
-        res.json({ 'Bearer': token });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+        req.login(user, { session: false }, (err) => {
+            if (err) {
+            return next(err);
+            }
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            return res.json({ token });
+        });
+    })(req, res, next);
 };
 
 exports.updateUser = async (req, res) => {

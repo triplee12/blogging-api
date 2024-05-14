@@ -4,12 +4,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
-const authMiddleware = require('./middleware/authMiddleware');
+const passport = require('./middleware/authMiddleware');
 require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
+app.use(passport.initialize());
 
 mongoose.connect('mongodb://localhost:27017/blogapi', {
     useNewUrlParser: true,
