@@ -101,9 +101,9 @@ exports.getPublishedBlogs = async (req, res) => {
 exports.getBlogById = async (req, res) => {
     try {
         const { id } = req.params;
-        const blog = await Blog.findById(id).populate('author', 'first_name last_name');
+        const blog = await Blog.findOne({ _id: id, state: 'published' }).populate('author', 'first_name last_name');
         if (!blog) {
-            return res.status(404).json({ error: error.message });
+            return res.status(404).json({ error: 'Blog not found or not published' });
         }
         blog.read_count += 1;
         await blog.save();
