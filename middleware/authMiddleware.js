@@ -4,6 +4,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
+const logger = require('../log/logger');
 require('dotenv').config();
 
 // Local Strategy for username/password authentication

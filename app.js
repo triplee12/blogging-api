@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
 const passport = require('./middleware/authMiddleware');
+const logger = require('./log/logger');
 require('dotenv').config();
 
 const app = express();
@@ -17,9 +18,11 @@ mongoose.connect('mongodb://localhost:27017/blogapi', {
     useUnifiedTopology: true,
 })
     .then(() => {
+        logger.info('Connected to MongoDB');
         console.log('Connected to MongoDB');
     })
     .catch((error) => {
+        logger.error(`MongoDB connection error: ${error.message}`);
         console.error('MongoDB connection error: ', error);
     });
 

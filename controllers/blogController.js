@@ -1,6 +1,7 @@
 // Blog controller for blogging api
 
 const Blog = require('../models/blogs');
+const logger = require('../log/logger');
 
 exports.createBlog = async (req, res) => {
     try {
@@ -18,6 +19,7 @@ exports.createBlog = async (req, res) => {
         await blog.save();
         res.json(blog);
     } catch (error) {
+        logger.error(`Error creating blog: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
@@ -56,6 +58,7 @@ exports.getUserBlogs = async (req, res) => {
             .limit(limit);
         res.json(blogs);
     } catch (error) {
+        logger.error(`Error retriving user's blogs: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
@@ -94,6 +97,7 @@ exports.getPublishedBlogs = async (req, res) => {
             .limit(limit);
         res.json(blogs);
     } catch (error) {
+        logger.error(`Error retriing published blogs: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
@@ -109,6 +113,7 @@ exports.getBlogById = async (req, res) => {
         await blog.save();
         res.json(blog);
     } catch (error) {
+        logger.error(`Error retriving a blog: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
@@ -134,6 +139,7 @@ exports.updateBlog = async (req, res) => {
         await blog.save()
         res.json(blog);
     } catch (error) {
+        logger.error(`Error updating a blog: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
@@ -152,6 +158,7 @@ exports.deleteBlog = async (req, res) => {
         await blog.remove();
         res.status(301).json({ message: "Blog deleted successfully" });
     } catch (error) {
+        logger.error(`Error deleting a blog: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 };
