@@ -49,4 +49,10 @@ passport.use(new JwtStrategy({
     }
 ));
 
-module.exports = passport;
+// Middleware function for authenticating using Passport LocalStrategy
+const authenticateLocal = passport.authenticate('local', { session: false });
+
+// Middleware function for authenticating using Passport JWTStrategy
+const authenticateJWT = passport.authenticate('jwt', { session: false });
+
+module.exports = { authenticateLocal, authenticateJWT };

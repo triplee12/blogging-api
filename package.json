@@ -4,7 +4,7 @@
   "description": "​ You are required to build a blogging api. The general idea here is that the api has a general endpoint that shows a list of articles that have been created by different people, and anybody that calls this endpoint, should be able to read a blog created by them or other users.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
+    "esm": "^3.2.25",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.4",
@@ -23,9 +24,12 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
-    "chai": "^5.1.1",
-    "chai-http": "^4.4.0",
-    "mocha": "^10.4.0",
-    "nodemon": "^3.1.0"
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.1",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "sinon": "^17.0.1",
+    "supertest": "^7.0.0"
   }
 }

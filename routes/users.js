@@ -3,10 +3,11 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/authController');
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/signup', userController.signup);
-router.post('/login', userController.login);
-router.put('/users/:id', userController.updateUser);
-router.delete('/users/:id', userController.deleteUser);
+router.post('/login', authMiddleware.authenticateLocal, userController.login);
+router.put('/users/:id', authMiddleware.authenticateJWT, userController.updateUser);
+router.delete('/users/:id', authMiddleware.authenticateJWT, userController.deleteUser);
 
 module.exports = router;

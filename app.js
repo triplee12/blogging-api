@@ -4,7 +4,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
-const passport = require('./middleware/authMiddleware');
 const logger = require('./log/logger');
 const httpLogger = require('./log/httpLogger');
 require('dotenv').config();
@@ -13,7 +12,6 @@ const app = express();
 
 app.use(express.json());
 app.use(httpLogger)
-app.use(passport.initialize());
 
 mongoose.connect('mongodb://localhost:27017/blogapi', {
     useNewUrlParser: true,
@@ -36,3 +34,5 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     logger.info(`Server started on http://localhost:${PORT}`)
 });
+
+module.exports = app;
