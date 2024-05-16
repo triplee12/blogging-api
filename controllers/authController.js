@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const Blog = require('../models/blogs');
-const passport = require('../middleware/authMiddleware');
+const passport = require('passport');
 const logger = require('../log/logger');
 require('dotenv').config();
 

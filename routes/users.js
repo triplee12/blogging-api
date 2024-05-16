@@ -6,7 +6,7 @@ const userController = require('../controllers/authController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/signup', userController.signup);
-router.post('/login', authMiddleware.authenticateLocal, userController.login);
+router.post('/login', userController.login);
 router.put('/users/:id', authMiddleware.authenticateJWT, userController.updateUser);
 router.delete('/users/:id', authMiddleware.authenticateJWT, userController.deleteUser);
 
