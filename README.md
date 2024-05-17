@@ -78,9 +78,13 @@ Data Models
 ### Comment
 
 – comment_id (Primary Key)
+
 – blog_id (Foreign Key to Blog.blog_id)
+
 – user_id (Foreign Key to User.user_id)
+
 – content
+
 – created_at
 
 ## ERD Diagram
