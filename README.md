@@ -29,7 +29,7 @@ Write tests for all endpoints
 Create an ERD for entities and show relationships
 Use Winston and ensure functions and processes are logged
 
-### Note:
+### Note
 
 The owner of the blog should be logged in to perform actions
 
@@ -45,11 +45,15 @@ Data Models
 
 – email is required and should be unique
 
-– first_name and last_name is required
+– first_name is required
+
+– last_name is required
 
 – password
 
-​
+– created_at
+
+– udated_at
 
 ### Blog/Article
 
@@ -70,3 +74,15 @@ Data Models
 – body is required
 
 – timestamp
+
+### Comment
+
+– comment_id (Primary Key)
+– blog_id (Foreign Key to Blog.blog_id)
+– user_id (Foreign Key to User.user_id)
+– content
+– created_at
+
+## ERD Diagram
+
+![ERD Diagram](images/ERD.png)
