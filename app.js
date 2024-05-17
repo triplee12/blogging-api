@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
+const commentRoutes = require('./routes/comment');
 const logger = require('./log/logger');
 const httpLogger = require('./log/httpLogger');
 require('dotenv').config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' });
@@ -34,7 +35,8 @@ if (process.env.NODE_ENV !== 'test') {
     });
 }
 
-app.use('/auth', authRoutes);
-app.use('/blogs', blogRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/blogs', blogRoutes);
+app.use('/api/v1/blogs', commentRoutes);
 
 module.exports = app;
