@@ -147,7 +147,7 @@ exports.updateBlog = async (req, res) => {
 exports.deleteBlog = async (req, res) => {
     try {
         const { id } = req.params;
-        const blog = Blog.findById(id);
+        const blog = await Blog.findById(id);
         if (!blog) {
             res.status(404).json({ error: "Blog not found" });
         }
@@ -155,8 +155,8 @@ exports.deleteBlog = async (req, res) => {
         if (blog.author.toString() !== req.user._id.toString()) {
             return res.status(403).json({ error: "Unauthorized" });
         }
-        await blog.remove();
-        res.status(301).json({ message: "Blog deleted successfully" });
+        await blog.deleteOne();
+        res.status(200).json({ message: "Blog deleted successfully" });
     } catch (error) {
         logger.error(`Error deleting a blog: ${error.message}`);
         res.status(500).json({ error: error.message });
