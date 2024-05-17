@@ -28,12 +28,12 @@ describe('User Authentication Controller', () => {
     beforeEach(async () => {
         // Create a user and get a token
         await request(app)
-            .post('/auth/signup')
+            .post('/api/v1/auth/signup')
             .send(userData)
             .expect(201);
 
             const response = await request(app)
-            .post('/auth/login')
+            .post('/api/v1/auth/login')
             .send({ email: userData.email, password: userData.password })
             .expect(200);
 
@@ -48,7 +48,7 @@ describe('User Authentication Controller', () => {
             last_name: 'User'
         };
         const response = await request(app)
-            .post('/auth/signup')
+            .post('/api/v1/auth/signup')
             .send(userData1)
             .expect(201);
 
@@ -61,7 +61,7 @@ describe('User Authentication Controller', () => {
     it('should login a user and return a token', async () => {
         // Then, login with the same user
         const response = await request(app)
-            .post('/auth/login')
+            .post('/api/v1/auth/login')
             .send({ email: userData.email, password: userData.password })
             .expect(200);
 
@@ -71,14 +71,14 @@ describe('User Authentication Controller', () => {
     it('should fail to login with wrong password', async () => {
         // Try to login with incorrect password
         await request(app)
-            .post('/auth/login')
+            .post('/api/v1/auth/login')
             .send({ email: userData.email, password: 'wrongpassword' })
             .expect(401);
     });
 
     it('should fail to login with non-existent user', async () => {
         await request(app)
-            .post('/auth/login')
+            .post('/api/v1/auth/login')
             .send({ email: 'nonexistent@example.com', password: 'password' })
             .expect(401);
     });
@@ -88,7 +88,7 @@ describe('User Authentication Controller', () => {
         const user = await User.findOne({ email: userData.email });
 
         const response = await request(app)
-            .put(`/auth/users/${user._id}/update`)
+            .put(`/api/v1/auth/users/${user._id}/update`)
             .set('Authorization', `Bearer ${token}`)
             .send(updateData)
             .expect(200);
@@ -107,7 +107,7 @@ describe('User Authentication Controller', () => {
         const user = await User.findOne({ email: userData.email });
 
         const response = await request(app)
-            .delete(`/auth/users/${user._id}/delete`)
+            .delete(`/api/v1/auth/users/${user._id}/delete`)
             .set('Authorization', `Bearer ${token}`)
             .expect(200);
 

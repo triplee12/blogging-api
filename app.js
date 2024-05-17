@@ -37,6 +37,6 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/blogs', blogRoutes);
-app.use('/api/v1/blogs', commentRoutes);
+app.use('/api/v1/comments', commentRoutes);
 
 module.exports = app;

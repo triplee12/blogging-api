@@ -32,7 +32,7 @@ afterAll(async () => {
 
 describe('Blog Controller', () => {
 
-    describe('POST /blogs', () => {
+    describe('POST /api/v1/blogs', () => {
         it('should create a new blog', async () => {
         const blogData = {
             title: 'Test Blog',
@@ -42,7 +42,7 @@ describe('Blog Controller', () => {
         };
 
         const response = await request(app)
-            .post('/blogs')
+            .post('/api/v1/blogs')
             .set('Authorization', `Bearer ${mockToken}`)
             .send(blogData)
             .expect(200)
@@ -52,10 +52,10 @@ describe('Blog Controller', () => {
         });
     });
 
-    describe('GET /blogs/user', () => {
+    describe('GET /api/v1/blogs/user', () => {
         it('should get blogs for the authenticated user', async () => {
         const response = await request(app)
-            .get('/blogs/user')
+            .get('/api/v1/blogs/user')
             .set('Authorization', `Bearer ${mockToken}`)
             .expect(200)
             .expect('Content-Type', /json/);
@@ -64,10 +64,10 @@ describe('Blog Controller', () => {
         });
     });
 
-    describe('GET /blogs/published', () => {
+    describe('GET /api/v1/blogs/published', () => {
         it('should get all published blogs', async () => {
         const response = await request(app)
-            .get('/blogs/published')
+            .get('/api/v1/blogs/published')
             .expect(200)
             .expect('Content-Type', /json/);
 
@@ -75,7 +75,7 @@ describe('Blog Controller', () => {
         });
     });
 
-    describe('GET /blogs/published/:id', () => {
+    describe('GET /api/v1/blogs/published/:id', () => {
         it('should get a published blog by id', async () => {
         const blog = await Blog.create({
             title: 'Test Blog 1',
@@ -87,7 +87,7 @@ describe('Blog Controller', () => {
         });
 
         const response = await request(app)
-            .get(`/blogs/published/${blog._id}`)
+            .get(`/api/v1/blogs/published/${blog._id}`)
             .expect(200)
             .expect('Content-Type', /json/);
 
@@ -95,7 +95,7 @@ describe('Blog Controller', () => {
         });
     });
 
-    describe('PUT /blogs/:id/update', () => {
+    describe('PUT /api/v1/blogs/:id/update', () => {
         it('should update a blog', async () => {
             const blog = await Blog.create({
                 title: 'Test Blog 2',
@@ -115,7 +115,7 @@ describe('Blog Controller', () => {
             };
 
             const response = await request(app)
-                .put(`/blogs/${blog._id}/update`)
+                .put(`/api/v1/blogs/${blog._id}/update`)
                 .set('Authorization', `Bearer ${mockToken}`)
                 .send(updatedData)
                 .expect(200)
@@ -125,7 +125,7 @@ describe('Blog Controller', () => {
         });
     });
 
-    describe('DELETE /blogs/:id/delete', () => {
+    describe('DELETE /api/v1/blogs/:id/delete', () => {
         it('should delete a blog', async () => {
             const blog = await Blog.create({
                 title: 'Test Blog Delete',
@@ -137,7 +137,7 @@ describe('Blog Controller', () => {
             });
 
             const response = await request(app)
-                .delete(`/blogs/${blog._id}/delete`)
+                .delete(`/api/v1/blogs/${blog._id}/delete`)
                 .set('Authorization', `Bearer ${mockToken}`)
                 .expect(200);
 
