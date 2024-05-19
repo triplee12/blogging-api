@@ -5,7 +5,7 @@ const logger = require('../log/logger');
 
 exports.createBlog = async (req, res) => {
     try {
-        const { title, description, tags, body } = req.body;
+        const { title, description, tags, body, state } = req.body;
         const wordCount = body.split(/\s+/).length;
         const readingTime = Math.ceil(wordCount / 200);
         const blog = new Blog({
@@ -15,6 +15,7 @@ exports.createBlog = async (req, res) => {
             tags,
             body,
             reading_time: readingTime,
+            state: state || 'draft',
         });
         await blog.save();
         res.json(blog);
